@@ -20,15 +20,34 @@ class App extends Component {
   }
 
   addMenu=(name)=> {
-
+    axios.post('/api/menus',{name})
+    .then (res => {
+      const{menus,}= this.state
+      this.setState({menus:[...menus,res.data],})
+    })
   }
 
 
   updateMenu = (id) => {
+    axios.put(`/api/menus${id}`)
+    .then(res =>{
+      const menus = this.state.menus.map( t=>{
+        if (t.id === id)
+        return res.data;
+        return t;
+      })
+      this.setState({menus,});
+    })
 
   }
 
   deleteMenu =(id)=>{
+    axios
+    .delete(`/api/menus/${id}`)
+    .then(res =>{
+      const {menus,}= this.state;
+      this.setState({menus: menus.filter(t =>t.id !==id),})
+    })
 
   }
 
